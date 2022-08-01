@@ -87,11 +87,24 @@
 //     })
 //   }
 // }
-
+import { login } from '@/api/user'
 export default {
   namespaced: true,
-  state: {},
-  mutations: {},
-  actions: {}
+  state: {
+    token: null
+  },
+  mutations: {
+    setToken(state, payload) {
+      state.token = payload
+    }
+  },
+  actions: {
+    async loginAction(context, data) {
+      
+      // 发送请求获取用户token
+      const res = await login(data)
+      // console.log(res.data);
+      context.commit('setToken', res.data)
+    }
+  }
 }
-

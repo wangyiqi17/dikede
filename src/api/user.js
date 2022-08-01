@@ -1,8 +1,11 @@
 import request from '@/utils/request'
 
+import requestarr from '@/utils/piction'
+
+
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/api/user-service/user/login',
     method: 'post',
     data
   })
@@ -20,5 +23,14 @@ export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
     method: 'post'
+  })
+}
+
+
+
+// 验证码
+export const yanzm = (clientToken) => {
+  return requestarr({
+    url: `/api/user-service/user/imageCode/${clientToken}`
   })
 }
