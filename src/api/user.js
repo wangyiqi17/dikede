@@ -5,32 +5,44 @@ import requestarr from '@/utils/piction'
 
 export function login(data) {
   return request({
-    url: '/api/user-service/user/login',
+    url: '/user-service/user/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+export function getUserInfoApi(id) {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/user-service/user/' + id, 
   })
 }
+
+// /**
+//  * 
+//  * @param {String} id 用户id
+//  * @returns promise
+//  */
+// export function getUserDetail(id) {
+//     return request({
+//         url:'/api/user-service/user/' + id,
+//     })
+// }
 
 export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
 }
-
 
 
 // 验证码
 export const yanzm = (clientToken) => {
   return requestarr({
     url: `/api/user-service/user/imageCode/${clientToken}`
+  })
+}
+
+
+// 工单列表
+export function getGdApi() {
+  return request({
+    url: '/task-service/task/search',
   })
 }

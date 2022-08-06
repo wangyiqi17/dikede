@@ -1,110 +1,46 @@
-// import { login, logout, getInfo } from '@/api/user'
-// import { getToken, setToken, removeToken } from '@/utils/auth'
-// import { resetRouter } from '@/router'
 
-// const getDefaultState = () => {
-//   return {
-//     token: getToken(),
-//     name: '',
-//     avatar: ''
-//   }
-// }
-
-// const state = getDefaultState()
-
-// const mutations = {
-//   RESET_STATE: (state) => {
-//     Object.assign(state, getDefaultState())
-//   },
-//   SET_TOKEN: (state, token) => {
-//     state.token = token
-//   },
-//   SET_NAME: (state, name) => {
-//     state.name = name
-//   },
-//   SET_AVATAR: (state, avatar) => {
-//     state.avatar = avatar
-//   }
-// }
-
-// const actions = {
-//   // user login
-//   login({ commit }, userInfo) {
-//     const { username, password } = userInfo
-//     return new Promise((resolve, reject) => {
-//       login({ username: username.trim(), password: password }).then(response => {
-//         const { data } = response
-//         commit('SET_TOKEN', data.token)
-//         setToken(data.token)
-//         resolve()
-//       }).catch(error => {
-//         reject(error)
-//       })
-//     })
-//   },
-
-//   // get user info
-//   getInfo({ commit, state }) {
-//     return new Promise((resolve, reject) => {
-//       getInfo(state.token).then(response => {
-//         const { data } = response
-
-//         if (!data) {
-//           return reject('Verification failed, please Login again.')
-//         }
-
-//         const { name, avatar } = data
-
-//         commit('SET_NAME', name)
-//         commit('SET_AVATAR', avatar)
-//         resolve(data)
-//       }).catch(error => {
-//         reject(error)
-//       })
-//     })
-//   },
-
-//   // user logout
-//   logout({ commit, state }) {
-//     return new Promise((resolve, reject) => {
-//       logout(state.token).then(() => {
-//         removeToken() // must remove  token  first
-//         resetRouter()
-//         commit('RESET_STATE')
-//         resolve()
-//       }).catch(error => {
-//         reject(error)
-//       })
-//     })
-//   },
-
-//   // remove token
-//   resetToken({ commit }) {
-//     return new Promise(resolve => {
-//       removeToken() // must remove  token  first
-//       commit('RESET_STATE')
-//       resolve()
-//     })
-//   }
-// }
-import { login } from '@/api/user'
+import { login,getUserInfoApi,getGdApi, logout } from '@/api/user'
 export default {
   namespaced: true,
   state: {
-    token: null
+    token: null,
+    userInfo: {},
+    GdInfo: {}
   },
   mutations: {
     setToken(state, payload) {
       state.token = payload
+    },
+    setUserInfo(state, payload) {
+      state.userInfo = payload
+    },
+    setGdInfo(state, payload) {
+      state.GdInfo = payload
     }
   },
   actions: {
-    async loginAction(context, data) {
-      
-      // 发送请求获取用户token
-      const res = await login(data)
-      // console.log(res.data);
+     async getToken(context, payload) {
+      // console.log(payload);
+      const res = await login(payload)
+      console.log(res)
       context.commit('setToken', res.data)
+      // context.commit("setUserInfo",res.data)
+      // setTokenTime()
+    },
+    async getUserInfo(context, id) {
+      const userInfo = await getUserInfoApi(id)
+      console.log(userInfo)
+
+      context.commit('setUserInfo', userInfo.data)
+    },
+    async getGd(context, taskId) {
+      const GdInfo = await getGdApi(taskId)
+      console.log(GdInfo)
+      // context.commit('setGdInfo', res)
+    },
+    logout(context) {
+      context.commit('setToken', '')
+      context.commit('setUserInfo', {})
     }
   }
 }

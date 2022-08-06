@@ -7,3 +7,5 @@ export function getList(params) {
     params
   })
 }
+export function getDD() {
+}

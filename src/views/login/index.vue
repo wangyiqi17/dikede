@@ -65,10 +65,10 @@ export default {
         password: [
           {
             required: true,
-            message: "请输入密码，由6-10位字母，数字，_,-组成",
+            message: "请输入密码，由4-10位字母，数字组成",
             targger: "blur",
           },
-          { pattern: /^[a-zA-Z0-9_-]{6,10}$/, message: "密码格式错误" },
+          { pattern: /^[a-zA-Z0-9]{4,10}$/, message: "密码格式错误" },
         ],
         code: [
           {
@@ -168,9 +168,9 @@ export default {
     },
     async btnOk() {
       // console.log(123);
-      this.$refs.user.validate();
+      await this.$refs.user.validate();
       // console.log("校验通过");
-      this.$store.dispatch("user/loginAction", this.user);
+      await this.$store.dispatch("user/getToken", this.user);
       const { data } = await login(this.user);
       console.log(data);
       // this.userInfo = data;
@@ -184,7 +184,7 @@ export default {
       } else {
         return this.$message({
           type: "error",
-          message: `验证码输入错误`,
+          message: `登陆失败`,
         });
       }
     },
@@ -231,6 +231,7 @@ export default {
         position: absolute;
         top: 227px;
         left: 415px;
+        border-radius: 5px;
       }
     }
   }
